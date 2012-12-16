@@ -9,7 +9,7 @@ desc = """Выключение удаленных ПК под управлени
 Скрипт запрашивает пароль для указанного пользователя.
 """
 
-use = "%prog [Options] PC_FOR_SHUTDOWN username[@domain]"
+use = "%prog [Options] PC_FOR_SHUTDOWN [DOMAIN/]USERNAME"
 
 from optparse import OptionParser
 from subprocess import call
@@ -18,20 +18,25 @@ import getpass
 
 def shutdown(ip, username, password):
     """Shutting down remote windows PCs"""
-    cmd = 'net rpc shutdown -f -I %s -U ' % ip + username + '%' + password
+    cmd = 'net rpc shutdown -f -I %s -U %s%%%s &' % (ip, username, password)
     call(cmd, shell = True)
+    #print(cmd)
+    return None
 
 
 def main():
     parser = OptionParser(description=desc,
                           prog="pc_down.py",
-                          version="pc_down.py\nVersion 0.1a",
+                          version="%prog\nVersion 0.5",
                           usage=use
                           )
     (options, args) = parser.parse_args()
     if len(args) == 2:
         password = getpass.getpass()
-        if args[0] == '237':
+        if args[0] == '233':
+            for i in range(51, 71):
+                shutdown("192.168.0.%s" % i, args[1], password)
+        elif args[0] == '237':
             for i in range(101, 121):
                 shutdown("192.168.0.%s" % i, args[1], password)
         elif args[0] == '239':
