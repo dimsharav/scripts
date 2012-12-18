@@ -11,7 +11,7 @@ desc = """Выключение удаленных ПК под управлени
 
 # Команда выключения с параметрами
 cmd = 'net rpc shutdown -f -t 20 \
--C "Компьютер выключается. Пожалуйста, сохраните данные."'
+-C "Извините, компьютер выключается... Не забудьте сохранить Ваши данные."'
 
 from optparse import OptionParser
 from subprocess import call
@@ -29,7 +29,7 @@ def shutdown(pc, username, password, print_only=False):
         ip_first = ip_last = ipaddress.ip_address(pc)
 
     while ip_first <= ip_last:
-        cmd_full = cmd + '-I %s -U %s%%%s &' % (ip_first, username, password)
+        cmd_full = cmd + ' -I %s -U %s%%%s &' % (ip_first, username, password)
         ip_first += 1
         if print_only:
             print(cmd_full)
@@ -46,8 +46,9 @@ def main():
                           usage=use
                           )
     parser.add_option('-p', '--print', default=False, action='store_true',
-                      help='Только выводит на экран команды выключения ПК')
+                      help='только вывод на экран команд выключения ПК')
     (options, args) = parser.parse_args()
+    #print(options, args)
     if len(args) == 2:
         password = getpass.getpass()
         if args[0] == '233':
