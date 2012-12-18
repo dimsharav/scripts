@@ -9,24 +9,36 @@ desc = """Выключение удаленных ПК под управлени
 Скрипт запрашивает пароль для указанного пользователя.
 """
 
-use = "%prog [Options] PC_FOR_SHUTDOWN [DOMAIN/]USERNAME"
+# Команда выключения с параметрами
+cmd = 'net rpc shutdown -f '
 
 from optparse import OptionParser
 from subprocess import call
 import getpass
 
 
-def shutdown(ip, username, password):
+def shutdown(pc, username, password):
     """Shutting down remote windows PCs"""
-    cmd = 'net rpc shutdown -f -I %s -U %s%%%s &' % (ip, username, password)
-    call(cmd, shell = True)
-    #print(cmd)
+    import ipaddress
+
+    if '-' in pc:
+        a, b = pc.split('-')
+        ip_first, ip_last = ipaddress.ip_address(a), ipaddress.ip_address(b)
+    else:
+        ip_first = ip_last = ipaddress.ip_address(pc)
+
+    while ip_first <= ip_last:
+        cmd_full = cmd + '-I %s -U %s%%%s &' % (ip_first, username, password)
+        ip_first += 1
+        call(cmd_full, shell = True)
+        #print(cmd_full)
     return None
 
 
 def main():
+    use = "%prog [Options] PC_FOR_SHUTDOWN [DOMAIN/]USERNAME"
     parser = OptionParser(description=desc,
-                          prog="pc_down.py",
+                          prog="pc-down.py",
                           version="%prog\nVersion 0.5",
                           usage=use
                           )
@@ -34,16 +46,14 @@ def main():
     if len(args) == 2:
         password = getpass.getpass()
         if args[0] == '233':
-            for i in range(51, 71):
-                shutdown("192.168.0.%s" % i, args[1], password)
+            pc = '192.168.0.51-192.168.0.68'
         elif args[0] == '237':
-            for i in range(101, 121):
-                shutdown("192.168.0.%s" % i, args[1], password)
+            pc = '192.168.0.101-192.168.0.120'
         elif args[0] == '239':
-            for i in range(121, 139):
-                shutdown("192.168.0.%s" % i, args[1], password)
+            pc = '192.168.0.121-192.168.0.138'
         else:
-            shutdown(args[0], args[1], password)
+            pc = args[0]
+        shutdown(pc, args[1], password)
     else:
         parser.print_help()
     return None
