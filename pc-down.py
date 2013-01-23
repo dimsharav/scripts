@@ -10,7 +10,7 @@ desc = """Выключение удаленных ПК под управлени
 """
 
 # Команда выключения с параметрами
-cmd = 'net rpc shutdown -f -t 20 \
+cmd = 'net rpc shutdown -f -t 00 \
 -C "Извините, компьютер выключается... Не забудьте сохранить Ваши данные."'
 
 from optparse import OptionParser
