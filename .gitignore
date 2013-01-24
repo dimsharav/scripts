@@ -1,4 +1,6 @@
 *~
 *.swp
 *.pyc
+logins/*list
+logins/*csv
 __pycache__
