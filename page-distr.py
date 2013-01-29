@@ -60,10 +60,10 @@ def create_book(page_from, page_to):
         pages_count += (4 - (pages_count % 4))
         page_to = page_from + pages_count - 1
     for i in range(0, pages_count, 4):
-        pages_even.append(page_to - i)
-        pages_even.append(page_from + i)
-        pages_odd.append(page_from + i + 1)
-        pages_odd.append(page_to - i - 1)
+        pages_even.append(page_to - i // 2)
+        pages_even.append(page_from + i // 2)
+        pages_odd.append(page_from + i // 2 + 1)
+        pages_odd.append(page_to - i // 2 - 1)
     return pages_even, change_list_order(pages_odd)
 
 
