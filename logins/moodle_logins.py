@@ -5,7 +5,7 @@
 File: logins.py
 Author: Дмитрий Шаравьев
 Description:
-Создание минимального набора полей для ввода пользователей в Moodle
+Создание csv-файла с минимальным набором полей для ввода пользователей в Moodle
 Формат полей:
 http://docs.moodle.org/22/en/Upload_users#File_formats_for_upload_users_file
 
