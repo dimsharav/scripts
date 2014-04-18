@@ -9,18 +9,21 @@ desc = """Выключение удаленных ПК под управлени
 Скрипт запрашивает пароль для указанного пользователя.
 """
 
-# Команда выключения с параметрами
-cmd = 'net rpc shutdown -f -t 00 \
--C "Извините, компьютер выключается... Не забудьте сохранить Ваши данные."'
-
 from optparse import OptionParser
 from subprocess import call
 import getpass
 
 
-def shutdown(pc, username, password, print_only=False):
+def shutdown(pc, username, password, print_only=False, reboot=False):
     """Shutting down remote windows PCs"""
     import ipaddress
+
+    # Команда выключения с параметрами
+    cmd = 'net rpc shutdown -f -t 00 \
+    -C "Извините, компьютер выключается... Не забудьте сохранить Ваши данные."'
+
+    if reboot:
+        cmd += ' -r'
 
     if '-' in pc:
         a, b = pc.split('-')
@@ -47,6 +50,8 @@ def main():
                           )
     parser.add_option('-p', '--print', default=False, action='store_true',
                       help='только вывод на экран команд выключения ПК')
+    parser.add_option('-r', '--reboot', default=False, action='store_true',
+                      help='Перезагрузка вместо выключения')
     (options, args) = parser.parse_args()
     #print(options, args)
     if len(args) == 2:
@@ -59,7 +64,7 @@ def main():
             pc = '192.168.0.121-192.168.0.138'
         else:
             pc = args[0]
-        shutdown(pc, args[1], password, options.print)
+        shutdown(pc, args[1], password, options.print, options.reboot)
     else:
         parser.print_help()
     return None
