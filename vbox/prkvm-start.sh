@@ -1,3 +1,4 @@
 #!/bin/sh
-VBoxManage startvm WinXP-Spiceworks
-VBoxManage startvm centos_local_repo --type headless
+VBoxManage startvm spcwrks --type headless
+VBoxManage startvm debian --type headless
+VBoxManage startvm SVPN --type headless

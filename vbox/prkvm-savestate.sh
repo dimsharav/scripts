@@ -1,3 +1,4 @@
 #!/bin/sh
-VBoxManage controlvm centos_local_repo savestate
-VBoxManage controlvm WinXP-Spiceworks savestate
+VBoxManage controlvm spcwrks savestate
+VBoxManage controlvm debian savestate
+VBoxManage controlvm SVPN savestate
